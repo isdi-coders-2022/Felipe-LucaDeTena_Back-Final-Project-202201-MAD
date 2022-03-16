@@ -1,0 +1,6 @@
+projectKey=wishy
+serverUrl=http://localhost:9000
+serverVersion=9.2.4.50792
+dashboardUrl=http://localhost:9000/dashboard?id=wishy
+ceTaskId=AX-M4ACXwcFL7yZvCFFh
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AX-M4ACXwcFL7yZvCFFh
