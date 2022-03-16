@@ -6,7 +6,6 @@ export function collectionCreator(modelName = 'Collection') {
         createdBy: {
             type: mongoose.Types.ObjectId,
             ref: 'User',
-            required: true,
         },
         totalPrice: { type: Number, required: true },
         items: [{ type: mongoose.Types.ObjectId, ref: 'Item' }],

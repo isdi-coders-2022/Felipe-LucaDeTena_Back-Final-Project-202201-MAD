@@ -2,7 +2,7 @@ import { mongoConnect, mongoDisconnect } from '../services/db.js';
 import { collectionCreator } from './collection.model';
 
 describe('given a connection with MongoDB', () => {
-    const collection = 'testingTasks';
+    const collection = 'testingCollections';
     beforeAll(() => {
         mongoConnect();
     });
@@ -11,8 +11,8 @@ describe('given a connection with MongoDB', () => {
     });
 
     test('then should exist our Model ', () => {
-        const Task = collectionCreator(collection);
-        expect(Task).toBeTruthy();
-        expect(Task.modelName).toBe(collection);
+        const Collection = collectionCreator(collection);
+        expect(Collection).toBeTruthy();
+        expect(Collection.modelName).toBe(collection);
     });
 });

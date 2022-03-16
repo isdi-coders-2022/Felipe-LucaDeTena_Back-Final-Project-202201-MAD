@@ -1,16 +1,17 @@
 import * as controller from './register.controller.js';
 import bcrypt from 'bcryptjs';
-import { UserModel } from '../models/user.model.js';
-
+import { userCreator } from '../models/user.model.js';
 jest.mock('../models/user.model.js');
 jest.mock('bcryptjs');
 jest.mock('../services/auth.js');
 describe('Given the register controller', () => {
+    const User = { create: jest.fn() };
     let req;
     let res;
     let next;
     beforeEach(() => {
         // User.find.mockReturnValue(User);
+        userCreator.mockReturnValue(User);
         req = { params: {} };
         res = {};
         res.send = jest.fn().mockReturnValue(res);
@@ -23,28 +24,28 @@ describe('Given the register controller', () => {
             test('Then call json', async () => {
                 req.body = { name: 'Pepe', password: '1234' };
                 bcrypt.hashSync.mockReturnValue('encrypted1234');
-                UserModel.create.mockReturnValue({
+                User.create.mockReturnValue({
                     name: 'Pepe',
+                    surName: 'suarez',
+                    email: 'pepe@gmail.com',
                     password: 'encrypted1234',
-                    id: 5,
                 });
                 // createToken.mockReturnValue('mock_token');
                 await controller.userRegister(req, res, next);
                 expect(res.json).toHaveBeenCalledWith({
                     // token: 'mock_token',
                     name: 'Pepe',
+                    email: 'pepe@gmail.com',
+                    surName: 'suarez',
                     password: 'encrypted1234',
-                    id: 5,
                 });
             });
         });
         describe('And it does not works (promise is rejected)', () => {
             test('Then call next', async () => {
-                req.body = { username: 'Pepe', password: '1234' };
+                req.body = { name: 'Pepe', password: '1234' };
                 bcrypt.hashSync.mockReturnValue('encrypted1234');
-                UserModel.create.mockRejectedValue(
-                    new Error('Error adding user')
-                );
+                User.create.mockRejectedValue(new Error('Error adding user'));
                 await controller.userRegister(req, res, next);
                 expect(next).toHaveBeenCalled();
             });
@@ -52,9 +53,9 @@ describe('Given the register controller', () => {
         describe('And there is no password', () => {
             test('Then call next', async () => {
                 req.body = { password: undefined };
-                UserModel.create.mockResolvedValue({});
+                User.create.mockResolvedValue({});
                 bcrypt.hashSync.mockImplementation(() => {
-                    throw new Error('Error, no password');
+                    new Error('Error, no password');
                 });
                 await controller.userRegister(req, res, next);
                 expect(next).toHaveBeenCalled();
@@ -62,7 +63,8 @@ describe('Given the register controller', () => {
         });
         describe('And there is no user name', () => {
             test('Then call next', async () => {
-                UserModel.create.mockResolvedValue(null);
+                req.body = { name: null };
+                User.create.mockResolvedValue(null);
                 await controller.userRegister(req, res, next);
                 expect(next).toHaveBeenCalled();
             });

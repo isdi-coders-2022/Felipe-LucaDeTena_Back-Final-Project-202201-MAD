@@ -24,6 +24,10 @@ app.use('/auth', authRouter);
 app.use('/items', itemsRouter);
 app.use('/collections', collectionsRouter);
 
+app.use('/', (err, req, res, next) => {
+    res.status(500).json({ err });
+});
+
 app.listen(port, () => {
     console.log(`Server listening in http://localhost:${port}`);
 });

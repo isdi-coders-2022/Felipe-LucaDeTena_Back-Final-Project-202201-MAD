@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { CollectionModel } from '../models/collection.model.js';
+import { UserModel } from '../models/user.model.js';
 
 dotenv.config();
 
@@ -28,6 +29,8 @@ export const getAllCollections = async (req, res, next) => {
 
 export const updateCollection = async (req, res, next) => {
     try {
+        const authHeader = req.headers.authorization.split(' ')[1];
+        const tokenContent = jwt.verify(authHeader, process.env.SECRET);
         await CollectionModel.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         }).then((resp) => {
@@ -45,7 +48,14 @@ export const insertCollection = async (req, resp, next) => {
         const collectionData = { ...req.body, createdBy: tokenContent.id };
         const result = await CollectionModel.create(collectionData);
 
-        resp.json(result);
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            tokenContent.id,
+            {
+                $push: { collections: result.id },
+            },
+            { new: true }
+        );
+        resp.json(updatedUser);
     } catch (error) {
         next(error);
     }

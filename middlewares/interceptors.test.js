@@ -1,9 +1,9 @@
 import * as interceptors from './interceptors.js';
 import { verifyToken } from '../services/auth.js';
-import { Task } from '../models/task.model.js';
+import { CollectionModel } from '../models/collection.model.js';
 
 jest.mock('../services/auth.js');
-jest.mock('../models/task.model.js');
+jest.mock('../models/collection.model.js');
 
 describe('Given a route intercepted by loginRequired', () => {
     let req;
@@ -61,7 +61,7 @@ describe('Given a route intercepted by userRequired', () => {
         next = jest.fn();
     });
     beforeEach(() => {
-        Task.findById.mockReturnValue({
+        CollectionModel.findById.mockReturnValue({
             responsible: 1,
         });
     });
