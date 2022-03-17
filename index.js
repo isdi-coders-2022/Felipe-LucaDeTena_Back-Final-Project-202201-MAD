@@ -8,6 +8,7 @@ import usersRouter from './routes/users.routes.js';
 import itemsRouter from './routes/items.routes.js';
 import collectionsRouter from './routes/collections.routes.js';
 import authRouter from './routes/auth.routes.js';
+import helmet from 'helmet';
 
 dotenv.config();
 mongoConnect();
@@ -17,6 +18,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(helmet());
 app.use(cors());
 
 app.use('/users', usersRouter);

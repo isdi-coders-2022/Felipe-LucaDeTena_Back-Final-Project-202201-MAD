@@ -10,7 +10,6 @@ export function userCreator(modelName = 'User') {
         backImg: { type: String },
         interFaceColor: { type: String },
         collections: [{ type: mongoose.Types.ObjectId, ref: 'Collection' }],
-        favourites: [{ type: mongoose.Types.ObjectId, ref: 'Collection' }],
         followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         following: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     });
