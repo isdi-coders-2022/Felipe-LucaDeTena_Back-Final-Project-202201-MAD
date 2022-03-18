@@ -82,3 +82,10 @@ const mockUser = {
     followers: [],
     following: [],
 };
+
+const mockUser2 = {
+    name: 'Constanza',
+    surName: 'Ferrarine',
+    email: 'constanzaferrarini@gmail.com',
+    password: '123',
+};

@@ -23,11 +23,14 @@ export const loginRequired = (req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 export const userRequired = async (req, res, next) => {
-    const taskId = req.params.id;
+    // console.log(req);
+    const collectionId = req.params.id;
     const userId = req.tokenPayload.id;
-    const task = await CollectionModel.findById(taskId);
-    console.log(task, userId);
-    if (task?.responsible.toString() === userId) {
+    const collection = await CollectionModel.findById(collectionId);
+    // console.log(collection, userId);
+    console.log(collection);
+    if (collection?.createdBy.toString() === userId) {
+        console.log('a');
         next();
     } else {
         const userError = new Error('not authorized user');

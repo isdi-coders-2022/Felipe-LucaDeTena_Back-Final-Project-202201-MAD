@@ -8,7 +8,8 @@ import {
     installCollections,
 } from './db.js';
 
-import mockCollection from '../data/collection.data';
+import mockUser from '../data/user.data.js';
+import mockCollection from '../data/collection.data.js';
 
 describe('given a connection with MongoDB', () => {
     afterEach(async () => {
@@ -27,16 +28,14 @@ describe('given a connection with MongoDB', () => {
 
     test('then it should be created and populated', async () => {
         await mongoConnect();
-        // const { Task, connection } = await taskCreator(modelName);
-        const mockUsers = data.users;
-        const { result: users } = await installUsers(mockUsers);
+        const { result: users } = await installUsers(mockUser);
         const mockColl = mockCollection.map((item, i) => {
             const index = i <= 1 ? i : 0;
-            return { ...item, responsible: users[index]._id };
+            return { ...item, createdBy: users[index].id };
         });
-        const { result } = await installTasks(mockTasks);
-        expect(result).toBeTruthy();
+        const { result } = await installCollections(mockColl);
+
         expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBe(data.tasks.length);
+        expect(result.length).toBe(mockColl.length);
     });
 });

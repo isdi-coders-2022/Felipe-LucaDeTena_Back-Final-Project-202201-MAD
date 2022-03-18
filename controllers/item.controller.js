@@ -49,6 +49,7 @@ export const deleteItem = async (req, res, next) => {
             res.json(resp);
         });
     } catch (error) {
+        console.log(error);
         next(error);
     }
 };

@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get('/', getAllCollections);
 router.get('/:id', getCollection);
-router.post('/', insertCollection, loginRequired, userRequired);
-router.delete('/:id', deleteCollection, loginRequired, userRequired);
-router.patch('/:id', updateCollection, loginRequired, userRequired);
+router.post('/', loginRequired, insertCollection);
+router.delete('/:id', loginRequired, userRequired, deleteCollection);
+router.patch('/:id', loginRequired, userRequired, updateCollection);
 export default router;

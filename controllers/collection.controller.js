@@ -8,7 +8,7 @@ dotenv.config();
 export const getCollection = async (req, res, next) => {
     try {
         const collection = await CollectionModel.findById(req.params.id)
-            .populate('createdBy', 'name')
+            .populate('createdBy', 'name' + 'surName')
             .populate('items');
         res.json(collection);
     } catch (error) {
@@ -29,8 +29,6 @@ export const getAllCollections = async (req, res, next) => {
 
 export const updateCollection = async (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization.split(' ')[1];
-        const tokenContent = jwt.verify(authHeader, process.env.SECRET);
         await CollectionModel.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
         }).then((resp) => {
@@ -47,7 +45,6 @@ export const insertCollection = async (req, resp, next) => {
         const tokenContent = jwt.verify(authHeader, process.env.SECRET);
         const collectionData = { ...req.body, createdBy: tokenContent.id };
         const result = await CollectionModel.create(collectionData);
-
         const updatedUser = await UserModel.findByIdAndUpdate(
             tokenContent.id,
             {

@@ -6,12 +6,12 @@ import {
     updateItem,
     deleteItem,
 } from '../controllers/item.controller.js';
+import { loginRequired, userRequired } from '../middlewares/interceptors.js';
 
 const router = express.Router();
-
-router.post('/', insertItem);
 router.get('/:id', getItem);
 router.get('/', getAllItems);
-router.delete('/:id', deleteItem);
-router.patch('/:id', updateItem);
+router.post('/', loginRequired, insertItem);
+router.delete('/:id', loginRequired, userRequired, deleteItem);
+router.patch('/:id', loginRequired, userRequired, updateItem);
 export default router;
