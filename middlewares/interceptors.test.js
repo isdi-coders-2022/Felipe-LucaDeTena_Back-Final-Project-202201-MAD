@@ -62,7 +62,7 @@ describe('Given a route intercepted by userRequired', () => {
     });
     beforeEach(() => {
         CollectionModel.findById.mockReturnValue({
-            responsible: 1,
+            createdBy: 1,
         });
     });
     describe('When token user is the user of the task', () => {

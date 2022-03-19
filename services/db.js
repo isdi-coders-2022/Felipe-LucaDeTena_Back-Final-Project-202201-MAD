@@ -26,7 +26,7 @@ export async function mongoDisconnect() {
 export async function installUsers(data, modelName = 'User') {
     const User = userCreator(modelName);
     const deleted = await User.deleteMany({});
-    const result = await User.insertMany(data);
+    const result = await User.insertMany(data.mockUser);
     return { result, deleted };
 }
 
