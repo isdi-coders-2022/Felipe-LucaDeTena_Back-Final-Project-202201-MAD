@@ -13,6 +13,7 @@ export const getUser = async (req, res, next) => {
             .populate('following')
             .populate('collections');
         res.json(user);
+        console.log(user);
     } catch (error) {
         next(error);
     }
@@ -29,11 +30,13 @@ export const updateUser = (req, res, next) => {
 };
 
 export const AddFollowers = async (req, res, next) => {
+    const { body, params } = req;
+    console.log({ body, params });
     try {
-        const userFollowing = await UserModel.findById(req.params.id);
-
+        const following = await UserModel.findById(req.params.id);
+        console.log(following);
         if (
-            userFollowing.followers.some(
+            following.followers.some(
                 (follower) => follower.toString() === req.body.id
             )
         ) {
@@ -41,14 +44,18 @@ export const AddFollowers = async (req, res, next) => {
                 .status(400)
                 .json({ alreadyFollows: 'User  is already followed' });
         } else {
-            userFollowing.followers.push(req.body.id);
-            await userFollowing.save();
+            following.followers.push(req.body.id);
+            await following.save();
 
-            const userFollower = await UserModel.findById(req.body.id);
-            userFollower.following.push(req.params.id);
-            await userFollower.save();
+            const user = await UserModel.findById(req.body.id);
+            user.following.push(req.params.id);
+            await user.save();
 
-            res.json(userFollowing);
+            const userToReturn = await UserModel.findById(req.body.id).populate(
+                ['collections']
+            );
+
+            res.json(userToReturn);
         }
     } catch (error) {
         next(error);
@@ -57,7 +64,7 @@ export const AddFollowers = async (req, res, next) => {
 export const RemoveFollowers = async (req, res, next) => {
     console.log(1);
     try {
-        const userFollowing = await UserModel.findById(req.params.id);
+        let userFollowing = await UserModel.findById(req.params.id);
         if (
             userFollowing.followers.some(
                 (follower) => follower.toString() !== req.body.id
@@ -66,7 +73,7 @@ export const RemoveFollowers = async (req, res, next) => {
             console.log(2);
             return res
                 .status(400)
-                .json({ doesntFollows: 'User is not followed' });
+                .json({ doesntFollow: 'User is not followed' });
         } else {
             console.log(3);
             const userFollower = await UserModel.findByIdAndUpdate(
@@ -76,14 +83,19 @@ export const RemoveFollowers = async (req, res, next) => {
                 },
                 { new: true }
             );
-            userFollower.UserModel.findByIdAndUpdate(
+            userFollowing = await UserModel.findByIdAndUpdate(
                 req.body.id,
                 {
                     $pull: { following: req.params.id },
                 },
                 { new: true }
             );
-            res.json(userFollowing);
+
+            const userToReturn = await UserModel.findById(req.body.id).populate(
+                ['collections']
+            );
+
+            res.json(userToReturn);
         }
     } catch (error) {
         console.log('ahora', error);

@@ -11,8 +11,8 @@ import { loginRequired, userRequired } from '../middlewares/interceptors.js';
 const router = express.Router();
 
 router.get('/', getAllCollections);
-router.get('/:id', getCollection);
 router.post('/', loginRequired, insertCollection);
+router.get('/:id', getCollection);
 router.delete('/:id', loginRequired, userRequired, deleteCollection);
 router.patch('/:id', loginRequired, userRequired, updateCollection);
 export default router;

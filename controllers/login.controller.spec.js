@@ -7,7 +7,7 @@ jest.mock('../models/user.model.js');
 jest.mock('bcryptjs');
 jest.mock('../services/auth.js');
 
-describe('Given the tasks controller', () => {
+describe('Given the login controller', () => {
     let req;
     let res;
     // eslint-disable-next-line no-unused-vars
@@ -64,17 +64,25 @@ describe('Given the tasks controller', () => {
             describe('And the user name and password are ok', () => {
                 test('Then call send', async () => {
                     const user = {
-                        name: 'Pepe',
-                        id: '1',
+                        email: 'emilyinparis@gmail.com',
+                        password: '123',
                     };
                     await UserModel.findOne.mockResolvedValue(user);
                     bcrypt.compareSync.mockReturnValue(true);
                     createToken.mockReturnValue('mock_token');
                     await controller.login(req, res, next);
                     expect(res.json).toHaveBeenCalledWith({
-                        name: 'Pepe',
-                        id: '1',
-                        token: 'mock_token',
+                        token: 'token',
+                        email: 'emilyinparis@gmail.com',
+                        id: '1234',
+                        profileImg: 'asddsa',
+                        backImg: 'sadd',
+                        interFaceColor: 'weas',
+                        collections: [],
+                        followers: [],
+                        following: [],
+                        name: 'emily',
+                        surName: 'inparis',
                     });
                 });
             });

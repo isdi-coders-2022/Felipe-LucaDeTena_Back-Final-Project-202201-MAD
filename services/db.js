@@ -22,23 +22,3 @@ export async function mongoConnect() {
 export async function mongoDisconnect() {
     return mongoose.disconnect();
 }
-
-export async function installUsers(data, modelName = 'User') {
-    const User = userCreator(modelName);
-    const deleted = await User.deleteMany({});
-    const result = await User.insertMany(data.mockUser);
-    return { result, deleted };
-}
-
-export async function installItems(data, modelName = 'Item') {
-    const Item = itemCreator(modelName);
-    const deleted = await Item.deleteMany({});
-    const result = await Item.insertMany(data);
-    return { result, deleted };
-}
-export async function installCollections(data, modelName = 'Collection') {
-    const Collection = collectionCreator(modelName);
-    const deleted = await Collection.deleteMany({});
-    const result = await Collection.insertMany(data);
-    return { result, deleted };
-}

@@ -8,7 +8,7 @@ dotenv.config();
 export const getCollection = async (req, res, next) => {
     try {
         const collection = await CollectionModel.findById(req.params.id)
-            .populate('createdBy', 'name' + 'surName')
+            .populate('createdBy', 'name')
             .populate('items');
         res.json(collection);
     } catch (error) {

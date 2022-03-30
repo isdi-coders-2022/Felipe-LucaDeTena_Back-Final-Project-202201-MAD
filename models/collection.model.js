@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 export function collectionCreator(modelName = 'Collection') {
     const collectionSchema = mongoose.Schema({
         name: { type: String, required: true },
+        img: { type: String, required: true },
         createdBy: {
             type: mongoose.Types.ObjectId,
             ref: 'User',
