@@ -28,9 +28,8 @@ export const userRequired = async (req, res, next) => {
     const userId = req.tokenPayload.id;
     const collection = await CollectionModel.findById(collectionId);
     // console.log(collection, userId);
-    console.log(collection);
+
     if (collection?.createdBy.toString() === userId) {
-        console.log('a');
         next();
     } else {
         const userError = new Error('not authorized user');

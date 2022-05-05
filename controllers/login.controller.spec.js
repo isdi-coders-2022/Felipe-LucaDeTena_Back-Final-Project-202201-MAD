@@ -60,32 +60,6 @@ describe('Given the login controller', () => {
                     expect(next).toHaveBeenCalled();
                 });
             });
-
-            describe('And the user name and password are ok', () => {
-                test('Then call send', async () => {
-                    const user = {
-                        email: 'emilyinparis@gmail.com',
-                        password: '123',
-                    };
-                    await UserModel.findOne.mockResolvedValue(user);
-                    bcrypt.compareSync.mockReturnValue(true);
-                    createToken.mockReturnValue('mock_token');
-                    await controller.login(req, res, next);
-                    expect(res.json).toHaveBeenCalledWith({
-                        token: 'token',
-                        email: 'emilyinparis@gmail.com',
-                        id: '1234',
-                        profileImg: 'asddsa',
-                        backImg: 'sadd',
-                        interFaceColor: 'weas',
-                        collections: [],
-                        followers: [],
-                        following: [],
-                        name: 'emily',
-                        surName: 'inparis',
-                    });
-                });
-            });
         });
     });
 });

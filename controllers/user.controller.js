@@ -13,7 +13,6 @@ export const getUser = async (req, res, next) => {
             .populate('following')
             .populate('collections');
         res.json(user);
-        console.log(user);
     } catch (error) {
         next(error);
     }
@@ -31,10 +30,10 @@ export const updateUser = (req, res, next) => {
 
 export const AddFollowers = async (req, res, next) => {
     const { body, params } = req;
-    console.log({ body, params });
+
     try {
         const following = await UserModel.findById(req.params.id);
-        console.log(following);
+
         if (
             following.followers.some(
                 (follower) => follower.toString() === req.body.id
@@ -62,7 +61,6 @@ export const AddFollowers = async (req, res, next) => {
     }
 };
 export const RemoveFollowers = async (req, res, next) => {
-    console.log(1);
     try {
         let userFollowing = await UserModel.findById(req.params.id);
         if (
@@ -70,12 +68,10 @@ export const RemoveFollowers = async (req, res, next) => {
                 (follower) => follower.toString() !== req.body.id
             )
         ) {
-            console.log(2);
             return res
                 .status(400)
                 .json({ doesntFollow: 'User is not followed' });
         } else {
-            console.log(3);
             const userFollower = await UserModel.findByIdAndUpdate(
                 req.params.id,
                 {
