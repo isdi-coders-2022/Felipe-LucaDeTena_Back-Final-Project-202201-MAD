@@ -1,17 +1,20 @@
 import express from 'express';
-import { userLogin } from '../controllers/login.controller.js';
-import { userRegister } from '../controllers/register.controller.js';
 import {
+    insertUser,
     getUser,
-    getAllUsers,
     updateUser,
+    deleteUser,
+    AddFollowers,
+    RemoveFollowers,
 } from '../controllers/user.controller.js';
-
+import { loginRequired, userRequired } from '../middlewares/interceptors.js';
 const router = express.Router();
 
-router.post('/login', userLogin);
-router.post('/register', userRegister);
-router.get('/', getAllUsers);
+router.post('/', insertUser);
 router.get('/:id', getUser);
-router.patch('/:id', updateUser);
+router.delete('/:id', loginRequired, userRequired, deleteUser);
+router.patch('/remove/:id', loginRequired, RemoveFollowers);
+router.patch('/following/:id', loginRequired, AddFollowers);
+router.patch('/:id', loginRequired, updateUser);
+
 export default router;

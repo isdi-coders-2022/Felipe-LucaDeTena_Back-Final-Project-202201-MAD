@@ -6,6 +6,7 @@ export function itemCreator(modelName = 'Item') {
         shopUrl: { type: String, required: true },
         price: { type: Number, required: true },
         category: { type: String, required: true },
+        brand: { type: String, required: true },
     });
 
     itemSchema.set('toJSON', {

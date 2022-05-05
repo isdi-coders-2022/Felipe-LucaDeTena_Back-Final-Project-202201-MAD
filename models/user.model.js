@@ -3,12 +3,13 @@ import mongoose from 'mongoose';
 export function userCreator(modelName = 'User') {
     const userSchema = mongoose.Schema({
         name: { type: String, required: true },
+        surName: { type: String, required: true },
+        email: { type: String, required: true },
         password: { type: String, required: true },
         profileImg: { type: String },
         backImg: { type: String },
         interFaceColor: { type: String },
         collections: [{ type: mongoose.Types.ObjectId, ref: 'Collection' }],
-        favourites: [{ type: mongoose.Types.ObjectId, ref: 'Collection' }],
         followers: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
         following: [{ type: mongoose.Types.ObjectId, ref: 'User' }],
     });
